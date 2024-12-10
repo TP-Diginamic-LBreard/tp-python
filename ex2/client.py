@@ -1,4 +1,13 @@
 class Client:
+    """
+    Représentation d'un client de la banque.
+
+    Properties:
+        nom             Nom·s du client
+        prenom          Prénom·s du client
+        adresse         Adresse du client
+        nir             Numéro de sécurité sociale / NIR
+    """
     def __init__(self, nom: str, prenom: str, adresse: str, nir: int) -> None:
         self.nom = nom
         self.prenom = prenom
@@ -17,6 +26,11 @@ class Client:
 
     @property
     def nom(self) -> str:
+        """
+        get -> str
+        set(str)
+            Nom·s du client.
+        """
         return self.__nom
 
     @nom.setter
@@ -25,6 +39,11 @@ class Client:
 
     @property
     def prenom(self) -> str:
+        """
+        get -> str
+        set(str)
+            Prénom·s du client.
+        """
         return self.__prenom
 
     @prenom.setter
@@ -33,6 +52,11 @@ class Client:
 
     @property
     def adresse(self) -> str:
+        """
+        get -> str
+        set(str)
+            Adresse du client.
+        """
         return self.__adresse
 
     @adresse.setter
@@ -41,6 +65,15 @@ class Client:
 
     @property
     def nir(self) -> int:
+        """
+        get -> int
+            Numéro de sécurité sociale / NIR du client.
+
+        set(str)
+            Réassigner cette valeur se fait via une chaîne de 15 caractères,
+            représentant le NIR *et* la clef de validation (13+2 caractères).
+            Le NIR et sa clef de validation sont vérifiés avant réassignation.
+        """
         return self.__nir
 
     # Bien que ce soit une procédure rare, le NIR *peut* être modifié.

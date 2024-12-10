@@ -8,6 +8,18 @@ from classproperty import classproperty
 
 
 class CompteBancaire:
+    """
+    Représentation d'un compte bancaire.
+
+    Class properties:
+        somme_soldes    Somme des soldes de tous les comptes bancaires
+
+    Properties:
+        identifiant     Identifiant du compte bancaire
+        date            Date de création du compte
+        client          Client possédant le compte
+        solde           Solde du compte
+    """
     __clients: [_Client] = []
 
     def __init__(self, date: str, client: _Client, solde: float) -> None:
@@ -41,16 +53,33 @@ class CompteBancaire:
     # C'est impossible comme ça mais… Voyez plutôt ;)
     @classproperty
     def somme_soldes(cls) -> float:
+        """
+        [class property]
+        get -> float
+            Somme des soldes de tous les comptes bancaires.
+        """
         return sum(map(lambda c: c.solde, cls.__clients))
 
 
     @property
     def identifiant(self) -> str:
+        """
+        get -> str
+            Identifiant interne du compte bancaire.
+        """
         date = self.date.strftime('%d%m%Y')
         return f'{self.__discriminant_id}{date}'
 
     @property
     def date(self) -> _date:
+        """
+        get -> date
+            Date de création du compte bancaire.
+
+        set(str)
+            Réassigner cette valeur se fait via une chaîne de caractères
+            représentant une date au format défini par l'ISO-8601.
+        """
         return self.__date
 
     @date.setter
@@ -62,6 +91,11 @@ class CompteBancaire:
 
     @property
     def client(self) -> _Client:
+        """
+        get -> Client
+        set(Client)
+            Client possédant le compte bancaire.
+        """
         return self.__client
 
     @client.setter
@@ -70,6 +104,11 @@ class CompteBancaire:
 
     @property
     def solde(self) -> float:
+        """
+        get -> float
+        set(float)
+            Solde du compte bancaire.
+        """
         return self.__solde
 
     @solde.setter
