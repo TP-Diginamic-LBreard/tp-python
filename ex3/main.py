@@ -1,10 +1,8 @@
 import csv
 
-if __name__ == '__main__':
-    data = []
-    with open('titanic_survival.csv') as f:
-        data.extend(csv.DictReader(f))
 
+def solutions_procedurales(data):
+    print('⚠ SOLUTIONS PROCÉDURALES ⚠')
     # Moyenne d'âge
     somme = 0
     total = 0
@@ -49,3 +47,47 @@ if __name__ == '__main__':
             bateau_max = bateau
 
     print(f'Le bateau de sauvetage ayant sauvé le plus de passagers est le bateau n°{bateau_max} avec {bateaux[bateau_max]} passagers sauvés')
+
+
+def solutions_fonctionnelles(data):
+    print('⚠ SOLUTIONS FONCTIONNELLES ⚠')
+    # Moyenne d'âge, édition FP (programmation fonctionnelle)
+    a_raw = list(map(lambda i: float(i),
+                     filter(lambda i: i.replace('.', '', 1).isdigit(),
+                            map(lambda i: i.get('age', ''),
+                                data))))
+    somme, total = sum(a_raw), len(a_raw)
+
+    print(f"Moyenne d'âge des passagers : {somme / total:.1f} ans")
+
+    # Pourcentage de survie par classe, édition FP
+    s_raw = list(map(lambda cs: (int(cs[0]), int(cs[1])),
+                     filter(lambda cs: cs[0].isdigit() and cs[1].isdigit(),
+                            map(lambda i: (i.get('pclass', ''), i.get('survived', '')),
+                                data))))
+    classes = set(map(lambda c_: c_[0], s_raw))
+    survivants = list(filter(lambda _s: _s[1] == 1, s_raw))
+
+    sommes = {classe: len(list(filter(lambda c_: c_[0] == classe, survivants))) for classe in classes}
+    totaux = {classe: len(list(filter(lambda c_: c_[0] == classe, s_raw))) for classe in classes}
+
+    for classe in classes:
+        print(f'Pourcentage de survie en classe {classe} : {sommes[classe] / totaux[classe] * 100:.2f}%')
+
+    # Bateaux de sauvetages, édition FP
+    b_raw = list(filter(lambda i: i.isdigit(),
+                        map(lambda i: i.get('boat', ''),
+                            data)))
+    bateaux = {b: b_raw.count(b) for b in set(b_raw)}
+    bateau_max = max(bateaux, key=bateaux.get)
+
+    print(f'Le bateau de sauvetage ayant sauvé le plus de passagers est le bateau n°{bateau_max} avec {bateaux[bateau_max]} passagers sauvés')
+
+
+if __name__ == '__main__':
+    data = []
+    with open('titanic_survival.csv') as f:
+        data.extend(csv.DictReader(f))
+
+    solutions_procedurales(data)
+    solutions_fonctionnelles(data)
